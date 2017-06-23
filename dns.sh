@@ -1,5 +1,5 @@
 #!/bin/bash
-str=$(sudo tcpdump -nn -c 5 port 53 | awk '{print $3}'| cut -d '.' -f -4 | sort | uniq -c | awk '{print $2,$1}')
+str=$(sudo tcpdump -nn -c 5 "port 53 and dst 192.168.1.1" | awk '{print $3}'| cut -d '.' -f -4 | sort | uniq -c | awk '{print $2,$1}')
 #echo $str
 cnt=0
 len=3
