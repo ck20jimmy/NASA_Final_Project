@@ -6,15 +6,15 @@ len=3
 while [ $cnt -lt 5 ]
 do
 		if [ $cnt -eq 0 ]; then
-			st1=$(echo $str | cut -d ' ' -f -3)
-			str=$(echo $str | cut -d ' ' -f 4-)
+			st1=$(echo $str | cut -d ' ' -f -2)
+			str=$(echo $str | cut -d ' ' -f 3-)
 		#echo st1
 		echo $st1
-			var=$(echo $st1 | awk '{print $3}')
+			var=$(echo $st1 | awk '{print $2}')
 		#	echo var
 		#	echo $var
 			if [ $var -ge 2 ]; then
-				ip=$(echo $st1 | awk '{print $2}')
+				ip=$(echo $st1 | awk '{print $1}')
 				#echo "${ip} is probably spoofing" >> attack
 				#echo "spoofing ip and count : ${ip} ${var}"
 				echo "${ip} ${var}">>attack
