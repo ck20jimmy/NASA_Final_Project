@@ -1,0 +1,83 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="./datamaps.world.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<style>
+    table, th, td{
+        border: 1px solid black;
+    }
+</style>
+
+<div id="container" style="position: relative; width: 850px; height: 600px;float:left"></div>
+
+<div>
+    <table id="tab">
+        <tr>
+            <th>IP</th><th>Attacks(times)</th><th>Country</th>
+        </tr>
+
+    </table>
+</div>
+
+<script>
+    d3.json("./ipdata.json", function(error, json) {
+        if (error) 
+                return console.warn(error);
+
+        var input = {
+        element: document.getElementById('container'),
+        geographyConfig: {
+            //popupOnHover: false,
+            //highlightOnHover: false
+            popupTemplate: function(geography, data=null) {
+               	var attack = 0;
+		if(data!=null){
+			attack=data.attack;
+		}
+		
+                return '<div class="hoverinfo"><strong>' + geography.properties.name + '<br>Number of Attacks: '+ attack +
+                /*'<br>Attackers IP: '+*/'</strong></div>';
+            },
+        },
+        fills:{
+            LOW: '#123456',//1-10
+            Medium: 'blue',//11-20
+            High: 'red',//20up
+            defaultFill: '#ABDDA4'//no attack
+        },
+        data:{
+            
+        }
+    };
+
+    var info={data:{}};
+
+    $.extend(true,info,json[0]);
+    /*
+    var tmp = {
+        data:{
+            US:{fillKey:'LOW',attack: 15},
+            CN:{fillKey:'High'},
+            CA:{fillKey:'Medium'}
+        }
+    };*/
+
+    $.extend(input,info);
+
+    var map = new Datamap(input);
+    
+    var row = Object.keys(json[1].data2).length;
+    
+    console.log(json[1].data2[1]);
+
+    for ( i = 0; i < row ; i++ ){
+        var string = "<tr><th>" + json[1].data2[i].ip +"</th><th>"+json[1].data2[i].attack + "</th><th>"+ json[1].data2[i].country +"</th></tr>";
+        
+        document.getElementById("tab").innerHTML+=string;
+    }
+   //setTimeout("self.location.reload();",10000);
+
+	
+});
+</script>
